@@ -18,8 +18,8 @@ router.use(authenticate);
 // ── Cart Routes ───────────────────────────────────────────────
 router.get("/", getCart);
 router.post("/", addToCart);
+router.delete("/", clearCart);
 router.patch("/:productId", updateCartItem);
 router.delete("/:productId", removeFromCart);
-router.delete("/", clearCart);
 
 module.exports = router;

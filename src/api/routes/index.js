@@ -10,7 +10,8 @@
 const { Router } = require("express");
 const authRoutes = require("./auth.routes");
 const productRoutes = require("./product.routes");
-const categoryRoutes = require("./category.routes"); 
+const categoryRoutes = require("./category.routes");
+const cartRoutes = require("./cart.routes");
 
 const router = Router();
 
@@ -23,8 +24,10 @@ router.use("/products", productRoutes);
 // /api/v1/categories
 router.use("/categories", categoryRoutes);
 
+// /api/v1/cart
+router.use("/cart", cartRoutes);
+
 // বাকি routes পরে add হবে
 // router.use("/orders", orderRoutes);
-// router.use("/cart", cartRoutes);
 
 module.exports = router;
