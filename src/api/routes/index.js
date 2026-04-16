@@ -12,6 +12,7 @@ const authRoutes = require("./auth.routes");
 const productRoutes = require("./product.routes");
 const categoryRoutes = require("./category.routes");
 const cartRoutes = require("./cart.routes");
+const orderRoutes = require("./order.routes");
 
 const router = Router();
 
@@ -27,7 +28,7 @@ router.use("/categories", categoryRoutes);
 // /api/v1/cart
 router.use("/cart", cartRoutes);
 
-// বাকি routes পরে add হবে
-// router.use("/orders", orderRoutes);
+// /api/v1/orders
+router.use("/orders", orderRoutes);
 
 module.exports = router;
