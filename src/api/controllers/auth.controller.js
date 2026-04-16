@@ -40,4 +40,14 @@ const login = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { register, login };
+const logout = asyncHandler(async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  await authService.logout(token);
+
+  res.status(200).json({
+    success: true,
+    message: "Logout সফল হয়েছে",
+  });
+});
+
+module.exports = { register, login, logout };

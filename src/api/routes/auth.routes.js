@@ -8,7 +8,8 @@
  */
 
 const { Router } = require("express");
-const { register, login } = require("../controllers/auth.controller");
+const { register, login, logout } = require("../controllers/auth.controller");
+const authenticate = require("../middlewares/authenticate");
 
 const router = Router();
 
@@ -17,5 +18,8 @@ router.post("/register", register);
 
 // POST /api/v1/auth/login
 router.post("/login", login);
+
+// POST /api/v1/auth/logout
+router.post("/logout", authenticate, logout);
 
 module.exports = router;

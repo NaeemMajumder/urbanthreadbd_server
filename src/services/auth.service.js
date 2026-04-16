@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 const AppError = require("../utils/AppError");
 const config = require("../config");
+const BlacklistedToken = require("../models/BlacklistedToken.model");
 
 // ── Token Generate ───────────────────────────────────────────
 const generateToken = (userId) => {
@@ -80,4 +81,9 @@ const login = async ({ phone, password }) => {
   };
 };
 
-module.exports = { register, login };
+// ── logout ───────────────────────────────────────────
+const logout = async (token) => {
+  await BlacklistedToken.create({ token });
+};
+
+module.exports = { register, login, logout };

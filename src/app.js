@@ -20,6 +20,7 @@ require("./models/Product.model");
 require("./models/Order.model");
 require("./models/Cart.model");
 require("./models/Review.model");
+require("./models/BlacklistedToken.model");
 
 const app = express();
 
