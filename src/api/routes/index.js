@@ -13,6 +13,7 @@ const productRoutes = require("./product.routes");
 const categoryRoutes = require("./category.routes");
 const cartRoutes = require("./cart.routes");
 const orderRoutes = require("./order.routes");
+const reviewRoutes = require("./review.routes");
 
 const router = Router();
 
@@ -30,5 +31,8 @@ router.use("/cart", cartRoutes);
 
 // /api/v1/orders
 router.use("/orders", orderRoutes);
+
+// /api/v1/reviews
+router.use("/reviews", reviewRoutes);
 
 module.exports = router;
