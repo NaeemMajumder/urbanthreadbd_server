@@ -55,7 +55,7 @@ const createOrder = async (userId, { paymentMethod, deliveryAddress }) => {
     userId,
     items: orderItems,
     totalAmount,
-    deliveryCharge: 60,
+    deliveryCharge: 0,
     paymentMethod,
     deliveryAddress,
   });

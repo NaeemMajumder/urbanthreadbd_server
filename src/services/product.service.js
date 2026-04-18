@@ -10,6 +10,7 @@
 
 const Product = require("../models/Product.model");
 const AppError = require("../utils/AppError");
+const Category = require("../models/Category.model"); 
 
 // ── সব Products ──────────────────────────────────────────────
 const getAllProducts = async (query) => {
@@ -21,6 +22,7 @@ const getAllProducts = async (query) => {
     size,
     color,
     search,
+    sort,
     page = 1,
     limit = 10,
   } = query;
@@ -33,9 +35,19 @@ const getAllProducts = async (query) => {
   }
 
   // Filters
-  if (category) filter.category = category;
+  if (category) {
+    const categoryDoc = await Category.findOne({ slug: category });
+    if (categoryDoc) {
+      filter.category = categoryDoc._id;
+    } else {
+      filter.category = category; // ObjectId হলে directly use
+    }
+  }
   if (featured) filter.featured = featured === "true";
-  if (size) filter.sizes = { $in: [size] };
+  if (size) {
+    const sizeArray = size.split(","); // "S,M,L" → ['S', 'M', 'L']
+    filter.sizes = { $in: sizeArray };
+  }
   if (color) filter.colors = { $in: [color] };
   if (minPrice || maxPrice) {
     filter.price = {};
@@ -46,11 +58,17 @@ const getAllProducts = async (query) => {
   // Active products শুধু দেখাবে
   filter.isActive = true;
 
+  // ← Sort logic add করো
+  let sortOption = { createdAt: -1 }; // default: newest first
+  if (sort === "price_asc") sortOption = { price: 1 };
+  if (sort === "price_desc") sortOption = { price: -1 };
+  if (sort === "name_asc") sortOption = { name: 1 };
+
   const skip = (Number(page) - 1) * Number(limit);
   const total = await Product.countDocuments(filter);
   const products = await Product.find(filter)
     .populate("category", "name slug")
-    .sort({ createdAt: -1 })
+    .sort(sortOption)
     .skip(skip)
     .limit(Number(limit));
 
