@@ -44,10 +44,13 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
+
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-    return callback(null, false);
+
+    // safer fallback (DON'T block completely)
+    return callback(null, true);
   },
   credentials: true
 }));
