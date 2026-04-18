@@ -12,6 +12,7 @@ const express = require("express")
 const cors = require("cors")
 const routes = require("./api/routes")
 const errorHandler = require("./api/middlewares/errorHandler")
+const connectDB = require("./config/db")  // ← add করো
 
 // ── Models Import ─────────────────────────────────────────────
 require("./models/User.model")
@@ -24,7 +25,16 @@ require("./models/BlacklistedToken.model")
 
 const app = express()
 
-// CORS
+// ← Vercel serverless fix
+let isConnected = false
+app.use(async (req, res, next) => {
+  if (!isConnected) {
+    await connectDB()
+    isConnected = true
+  }
+  next()
+})
+
 app.use(cors({
   origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : "*",
   credentials: true,
@@ -32,7 +42,6 @@ app.use(cors({
 
 app.use(express.json())
 
-// Health check
 app.get("/", (req, res) => {
   res.json({ message: "UrbanThread BD API is running!" })
 })
