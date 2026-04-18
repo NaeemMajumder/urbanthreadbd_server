@@ -9,7 +9,12 @@
 
 
 const express = require("express");
-const cors = require("cors");
+
+// Deploy এ এটা করো
+app.use(cors({
+  origin: process.env.CORS_ORIGINS.split(","),
+  credentials: true,
+}));
 const routes = require("./api/routes");
 const errorHandler = require("./api/middlewares/errorHandler");
 
