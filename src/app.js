@@ -35,12 +35,24 @@ app.use(async (req, res, next) => {
   next()
 })
 
-app.use(cors({
-  origin: process.env.CORS_ORIGINS?.split(",") || [],
-  credentials: true,
-}))
+const allowedOrigins = [
+  "https://urbanthreadbd-fe293.web.app",
+  "http://localhost:5173"
+];
 
-app.use(express.json())
+// MUST BE FIRST middleware
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  },
+  credentials: true
+}));
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ message: "UrbanThread BD API is running!" })
